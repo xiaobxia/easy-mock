@@ -14,6 +14,7 @@ const realtime = require('./controllers/realtime')
 const routerPrefix = config.get('routerPrefix')
 
 exports.mock = router({ prefix: routerPrefix.mock })
+  // 会创建一个可以访问的界面
   .all('*', restc, mock.getMock)
 
 exports.api = router({ prefix: routerPrefix.api })

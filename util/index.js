@@ -11,6 +11,7 @@ const cp = require('./cp')
  * 定时删除已经上传的过期文件
  */
 exports.dropFileSchedule = function () {
+  // 得到上传文件的配置
   const conf = config.get('upload')
   const expireDay = conf.expire.day
 
@@ -19,8 +20,9 @@ exports.dropFileSchedule = function () {
     const date = moment().subtract(expireDay, 'days').format('YYYY/MM/DD')
     const uploadDir = path.resolve(__dirname, conf.dir, date)
     const commandPath = `${uploadDir}/{${expireTypes}}`
-
+    // 过期的就删除
     rimraf(commandPath, () => {})
+    // 定期删除这个文件夹的内容并没有判断哪些文件夹过期了
     setInterval(() => rimraf(commandPath, () => {}), 1000 * 60 * 60)
   }
 }

@@ -12,11 +12,12 @@ const config = require('config')
 const parse = require('co-busboy')
 const concat = require('concat-stream')
 const unsplashClientId = config.get('unsplashClientId')
+// 缓存
 const unsplashCache = LRU({
   max: 1,
   maxAge: 1000 * 60 * 60
 })
-
+// 用于校验路由
 exports.proxy = function * () {
   const url = this.checkQuery('url').notEmpty().isUrl().value
 
@@ -56,7 +57,7 @@ exports.wallpaper = function * () {
   }
   unsplashCache.set('one', this.body)
 }
-
+// 上传接口
 exports.upload = function * () {
   const origin = this.request.origin
   const conf = config.get('upload')
